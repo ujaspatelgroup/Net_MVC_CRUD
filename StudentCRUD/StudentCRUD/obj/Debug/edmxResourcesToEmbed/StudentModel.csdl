@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="CRUD_OperationsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="CRUD_OperationsEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="ClassInfoes" EntityType="CRUD_OperationsModel.ClassInfo" />
+    <EntitySet Name="Students" EntityType="CRUD_OperationsModel.Student" />
+    <AssociationSet Name="FK_Student_ClassInfo" Association="CRUD_OperationsModel.FK_Student_ClassInfo">
+      <End Role="ClassInfo" EntitySet="ClassInfoes" />
+      <End Role="Student" EntitySet="Students" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="ClassInfo">
+    <Key>
+      <PropertyRef Name="Class_Id" />
+    </Key>
+    <Property Name="Class_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Standard" Type="Int32" />
+    <Property Name="StartDate" Type="DateTime" Precision="0" />
+    <Property Name="EndDate" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="Students" Relationship="CRUD_OperationsModel.FK_Student_ClassInfo" FromRole="ClassInfo" ToRole="Student" />
+  </EntityType>
+  <EntityType Name="Student">
+    <Key>
+      <PropertyRef Name="Student_Id" />
+    </Key>
+    <Property Name="Student_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Class_Id" Type="Int32" />
+    <NavigationProperty Name="ClassInfo" Relationship="CRUD_OperationsModel.FK_Student_ClassInfo" FromRole="Student" ToRole="ClassInfo" />
+  </EntityType>
+  <Association Name="FK_Student_ClassInfo">
+    <End Type="CRUD_OperationsModel.ClassInfo" Role="ClassInfo" Multiplicity="0..1" />
+    <End Type="CRUD_OperationsModel.Student" Role="Student" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClassInfo">
+        <PropertyRef Name="Class_Id" />
+      </Principal>
+      <Dependent Role="Student">
+        <PropertyRef Name="Class_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
